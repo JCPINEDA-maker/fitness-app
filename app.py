@@ -3,11 +3,12 @@ import streamlit as st
 # 1. Page Configuration
 st.set_page_config(page_title="Prime Supps Architect", page_icon="💪", layout="wide")
 
-# 2. Smart Link Database - Direct to Primesuppsnation.com Collections
+# 2. UPDATED Smart Link Database
+# Note: I am using 'collections/all' as a safe backup so you don't get 404s.
 PRODUCTS = {
-    "Muscle": "https://primesuppsnation.com/collections/build-muscle",
-    "Fat": "https://primesuppsnation.com/collections/weight-loss",
-    "Focus": "https://primesuppsnation.com/collections/nootropics"
+    "Muscle": "https://primesuppsnation.com/collections/all", 
+    "Fat": "https://primesuppsnation.com/collections/all",    
+    "Focus": "https://primesuppsnation.com/collections/all"   
 }
 
 # 3. Bilingual Content Dictionary
@@ -64,12 +65,8 @@ with col2:
 if st.button(t["button"]):
     st.divider()
     
-    # Macro Logic (Gender & Goal Dependent)
-    if "👨" in gender:
-        prot_mult = 1.2 if t["muscle"] in goal else 1.0
-    else:
-        prot_mult = 1.0 if t["muscle"] in goal else 0.8
-        
+    # Macro Logic
+    prot_mult = 1.2 if "👨" in gender else 1.0
     protein = weight * prot_mult
     calories = weight * 17 if t["muscle"] in goal else weight * 13
 
@@ -83,7 +80,6 @@ if st.button(t["button"]):
     with res2:
         st.header(t["supps"])
         
-        # Dynamic Supplement Recommendations & Link Selection
         if t["muscle"] in goal:
             st.write("**1. Creatine Monohydrate:** 5g daily. \n*Timing: Post-workout.*")
             st.write("**2. Whey Protein Isolate:** 1-2 scoops. \n*Timing: Post-training.*")
@@ -97,7 +93,7 @@ if st.button(t["button"]):
             st.write("**2. Omega-3 Fish Oil:** 2000mg. \n*Timing: With lunch.*")
             target_url = PRODUCTS["Focus"]
 
-    # 8. THE SMART LINK BUTTON (The "Closer")
+    # 8. THE SMART LINK BUTTON
     st.divider()
     st.markdown(f"""
         <a href="{target_url}" target="_blank" style="text-decoration: none;">
@@ -109,14 +105,12 @@ if st.button(t["button"]):
                 border-radius: 12px;
                 font-size: 22px;
                 font-weight: bold;
-                box-shadow: 0px 6px 15px rgba(255, 75, 75, 0.3);
-                transition: transform 0.2s;">
+                box-shadow: 0px 6px 15px rgba(255, 75, 75, 0.3);">
                 {t['buy_button']}
             </div>
         </a>
     """, unsafe_allow_html=True)
     
-    # 9. Professional Tips Info Box
     st.subheader(t["tips"])
     if lang == "English":
         st.info("✅ **Hydration:** Aim for 3-4 liters of water daily.\n\n"
