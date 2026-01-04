@@ -1,98 +1,128 @@
 import streamlit as st
 
-# 1. Page Setup
-st.set_page_config(page_title="Pro Fuel System", page_icon="🧪", layout="wide")
+# 1. Page Configuration
+st.set_page_config(page_title="Prime Supps Architect", page_icon="💪", layout="wide")
 
-# 2. Language Database (The "Dictionary")
+# 2. Smart Link Database - Direct to Primesuppsnation.com Collections
+PRODUCTS = {
+    "Muscle": "https://primesuppsnation.com/collections/build-muscle",
+    "Fat": "https://primesuppsnation.com/collections/weight-loss",
+    "Focus": "https://primesuppsnation.com/collections/nootropics"
+}
+
+# 3. Bilingual Content Dictionary
 content = {
     "English": {
-        "title": "🛡️ Pro Supplement Architect",
-        "subtitle": "Professional Nutrition & Supplement Programming",
-        "select_lang": "Choose Language",
+        "title": "🛡️ Prime Supps Architect",
+        "subtitle": "Professional Supplement & Nutrition Automation",
         "gender_label": "Select Gender",
         "goal_label": "Select Your Goal",
         "weight_label": "Current Weight (lbs)",
-        "button": "Generate Professional Program",
-        "tips_title": "💡 Nutrition & Timing Tips",
+        "button": "Generate My Program",
+        "buy_button": "🛒 Buy This Custom Stack Now",
         "muscle": "Build Muscle",
         "fat": "Burn Fat",
-        "focus": "Mental Performance"
+        "focus": "Mental Focus",
+        "tips": "💡 Professional Timing & Tips",
+        "macros": "📊 Your Macros",
+        "supps": "💊 Supplement Program"
     },
     "Español": {
-        "title": "🛡️ Arquitecto de Suplementos Pro",
-        "subtitle": "Programación Profesional de Nutrición y Suplementos",
-        "select_lang": "Seleccionar Idioma",
+        "title": "🛡️ Arquitecto Prime Supps",
+        "subtitle": "Automatización Profesional de Nutrición y Suplementos",
         "gender_label": "Seleccionar Género",
         "goal_label": "Seleccionar Objetivo",
         "weight_label": "Peso Actual (lbs)",
-        "button": "Generar Programa Profesional",
-        "tips_title": "💡 Consejos de Nutrición y Tiempos",
+        "button": "Generar Mi Programa",
+        "buy_button": "🛒 Comprar este Combo Ahora",
         "muscle": "Ganar Músculo",
         "fat": "Quemar Grasa",
-        "focus": "Rendimiento Mental"
+        "focus": "Enfoque Mental",
+        "tips": "💡 Tiempos y Consejos Profesionales",
+        "macros": "📊 Tus Macros",
+        "supps": "💊 Programa de Suplementos"
     }
 }
 
-# 3. Sidebar for Language Toggle
+# 4. Sidebar Language Selector
 lang = st.sidebar.selectbox("Language / Idioma", ["English", "Español"])
 t = content[lang]
 
-# 4. Header Section
+# 5. UI Header
 st.title(t["title"])
 st.write(t["subtitle"])
 
-# 5. Professional Inputs
+# 6. User Inputs
 col1, col2 = st.columns(2)
-
 with col1:
-    # GENDER SELECTION WITH ICONS
     gender = st.radio(t["gender_label"], ["👨 Man / Hombre", "👩 Woman / Mujer"], horizontal=True)
     weight = st.number_input(t["weight_label"], 100, 400, 180)
-
 with col2:
     goal = st.selectbox(t["goal_label"], [t["muscle"], t["fat"], t["focus"]])
 
-# 6. The Logic Engine
+# 7. Execution Engine
 if st.button(t["button"]):
     st.divider()
     
-    # Calculate Macros based on Gender & Weight
-    # Men get slightly more protein for muscle synthesis in this logic
+    # Macro Logic (Gender & Goal Dependent)
     if "👨" in gender:
-        protein = weight * 1.2 if t["muscle"] in goal else weight * 1.0
+        prot_mult = 1.2 if t["muscle"] in goal else 1.0
     else:
-        protein = weight * 1.0 if t["muscle"] in goal else weight * 0.8
+        prot_mult = 1.0 if t["muscle"] in goal else 0.8
         
-    calories = weight * 16 if t["muscle"] in goal else weight * 12
-    
+    protein = weight * prot_mult
+    calories = weight * 17 if t["muscle"] in goal else weight * 13
+
     # Results Display
     res1, res2 = st.columns(2)
-    
     with res1:
-        st.header("📊 Macros")
+        st.header(t["macros"])
         st.metric("Protein / Proteína", f"{int(protein)}g")
-        st.metric("Daily Calories / Calorías", f"{int(calories)} kcal")
+        st.metric("Calories / Calorías", f"{int(calories)} kcal")
         
     with res2:
-        st.header("💊 Supplement Program")
-        # Logic for Supplement recommendations
+        st.header(t["supps"])
+        
+        # Dynamic Supplement Recommendations & Link Selection
         if t["muscle"] in goal:
             st.write("**1. Creatine Monohydrate:** 5g daily. \n*Timing: Post-workout.*")
-            st.write("**2. Whey Protein:** 1-2 scoops. \n*Timing: Upon waking or post-training.*")
+            st.write("**2. Whey Protein Isolate:** 1-2 scoops. \n*Timing: Post-training.*")
+            target_url = PRODUCTS["Muscle"]
         elif t["fat"] in goal:
-            st.write("**1. L-Carnitine:** 2g. \n*Timing: 30 mins before cardio.*")
-            st.write("**2. Multivitamin:** 1 serving. \n*Timing: With breakfast.*")
+            st.write("**1. Advanced Fat Burner:** 1 cap. \n*Timing: 20 mins before cardio.*")
+            st.write("**2. BCAA Recovery:** 1 scoop. \n*Timing: During training.*")
+            target_url = PRODUCTS["Fat"]
         else:
-            st.write("**1. Omega-3:** 2000mg. \n*Timing: With largest meal.*")
-            st.write("**2. Magnesium:** 400mg. \n*Timing: 30 mins before sleep.*")
+            st.write("**1. Prime Focus Nootropic:** 2 caps. \n*Timing: 30 mins before work.*")
+            st.write("**2. Omega-3 Fish Oil:** 2000mg. \n*Timing: With lunch.*")
+            target_url = PRODUCTS["Focus"]
 
-    # 7. Professional Tips
-    st.subheader(t["tips_title"])
+    # 8. THE SMART LINK BUTTON (The "Closer")
+    st.divider()
+    st.markdown(f"""
+        <a href="{target_url}" target="_blank" style="text-decoration: none;">
+            <div style="
+                background-color: #ff4b4b;
+                color: white;
+                padding: 22px;
+                text-align: center;
+                border-radius: 12px;
+                font-size: 22px;
+                font-weight: bold;
+                box-shadow: 0px 6px 15px rgba(255, 75, 75, 0.3);
+                transition: transform 0.2s;">
+                {t['buy_button']}
+            </div>
+        </a>
+    """, unsafe_allow_html=True)
+    
+    # 9. Professional Tips Info Box
+    st.subheader(t["tips"])
     if lang == "English":
-        st.info("✅ **Hydration:** Drink 1oz of water per lb of body weight.\n\n"
-                "✅ **Timing:** Eat your largest carbohydrate meal 2 hours before training.")
+        st.info("✅ **Hydration:** Aim for 3-4 liters of water daily.\n\n"
+                "✅ **Recovery:** Ensure 7-8 hours of sleep for supplement efficiency.")
     else:
-        st.info("✅ **Hidratación:** Bebe 1oz de agua por cada libra de peso corporal.\n\n"
-                "✅ **Tiempos:** Consume tu comida más alta en carbohidratos 2 horas antes de entrenar.")
+        st.info("✅ **Hidratación:** Bebe de 3 a 4 litros de agua al día.\n\n"
+                "✅ **Recuperación:** Duerme de 7 a 8 horas para optimizar los suplementos.")
     
     st.balloons()
