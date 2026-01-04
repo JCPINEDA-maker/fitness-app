@@ -1,26 +1,28 @@
 import streamlit as st
 
+# 1. Page Configuration
 st.set_page_config(page_title="Fitness Fuel Finder", page_icon="💪")
 
-# DESIGN: Custom CSS to make it look professional
-# CHANGE THIS LINE (Line 6 or 7):
+# 2. DESIGN: Fixed CSS Injection
+# The error was caused by 'unsafe_allow_index'; 'unsafe_allow_html' is the correct term.
 st.markdown("""
     <style>
     .main { background-color: #f5f5f5; }
     h1 { color: #ff4b4b; text-align: center; }
     </style>
-    """, unsafe_allow_html=True) # I fixed 'index' to 'html' here
+    """, unsafe_allow_html=True)
 
 st.title("🛡️ Fitness Fuel Finder")
 st.subheader("Get your custom supplement & macro plan")
 
-# INPUTS
+# 3. INPUTS
 name = st.text_input("First Name")
 goal = st.selectbox("What is your main goal?", ["Build Muscle", "Burn Fat", "Mental Focus"])
 weight = st.number_input("Weight (lbs)", min_value=100, max_value=400, value=180)
 
+# 4. BUTTON & LOGIC
 if st.button("Generate My Plan"):
-    # LOGIC (This is the 'Work' the code does)
+    # Simple logic: 1g protein per lb of bodyweight
     protein = weight * 1.0
     
     st.success(f"Okay {name}, here is your strategy:")
@@ -34,13 +36,14 @@ if st.button("Generate My Plan"):
     with col2:
         st.write("### 💊 Recommended Stack")
         if goal == "Build Muscle":
-            st.write("- Creatine Monohydrate (5g)")
-            st.write("- Whey Protein Isolate")
+            st.write("- **Creatine Monohydrate** (5g)")
+            st.write("- **Whey Protein Isolate**")
         elif goal == "Burn Fat":
-            st.write("- L-Carnitine")
-            st.write("- Green Tea Extract")
+            st.write("- **L-Carnitine**")
+            st.write("- **Green Tea Extract**")
         else:
-            st.write("- Ashwagandha")
-            st.write("- Magnesium Glycinate")
+            st.write("- **Ashwagandha**")
+            st.write("- **Magnesium Glycinate**")
 
-    st.info("💡 **Marketing Tip:** You can link these products directly to your Shopify store!")
+    st.divider()
+    st.info("💡 **Founder Note:** Link these recommendations to your supplement store to drive sales.")
