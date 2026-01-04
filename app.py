@@ -3,12 +3,13 @@ import streamlit as st
 st.set_page_config(page_title="Fitness Fuel Finder", page_icon="💪")
 
 # DESIGN: Custom CSS to make it look professional
+# CHANGE THIS LINE (Line 6 or 7):
 st.markdown("""
     <style>
     .main { background-color: #f5f5f5; }
     h1 { color: #ff4b4b; text-align: center; }
     </style>
-    """, unsafe_allow_index=True)
+    """, unsafe_allow_html=True) # I fixed 'index' to 'html' here
 
 st.title("🛡️ Fitness Fuel Finder")
 st.subheader("Get your custom supplement & macro plan")
